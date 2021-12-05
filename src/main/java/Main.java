@@ -1,9 +1,6 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -101,7 +97,7 @@ public class Main {
         total.clear();load("citas");
         Cita cit= new Cita(fecha,razon,Doc,pac);
         String cita= mapper.writeValueAsString(cit);total.add(cita);
-        //Save();
+        Save("citas");
     }
     public static void cargarUsu(){
         if (Usuarios==null){
