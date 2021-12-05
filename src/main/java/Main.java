@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<Object>total= new ArrayList<Object>();
-    static ArrayList<Usuario>Usuarios= new ArrayList();
+    static ArrayList<Usuario> Usuarios= new ArrayList<>();
     static Path origi=null;
     static ObjectMapper mapper= new ObjectMapper();
 
@@ -39,43 +39,51 @@ public class Main {
         do{
             System.out.println("Porfavor escoga que es lo que va a querer hacer\n1= Registrar Doctor 2= Registrar Paciente" +
                     "3= Registrar nueva cita 0= Salir");
-            try{
-                int eleccion= Integer.parseInt(sc.next());
-                switch (eleccion){
+            try {
+                int eleccion = Integer.parseInt(sc.next());
+                switch (eleccion) {
                     case 1:
-                        System.out.println("Cual es el nombre del Doctor?"); nombre= sc.next();
-                        System.out.println("Cual es la especialidad del Doctor?");String espe= sc.next();
-                        crearDoc(nombre,espe);
-                        //Doctor doc= new Doctor(nombre,espe);
-                        //String doce=mapper.writeValueAsString(doc);
-                        //System.out.println(doce);
+                        System.out.println("Cual es el nombre del Doctor?");
+                        nombre = sc.next();
+                        System.out.println("Cual es la especialidad del Doctor?");
+                        String espe = sc.next();
+                        crearDoc(nombre, espe);
                         break;
                     case 2:
-                        System.out.println("Cual es el nombre del paciente nuevo(a)?");nombre= sc.next();
+                        System.out.println("Cual es el nombre del paciente nuevo(a)?");
+                        nombre = sc.next();
                         crearPaciente(nombre);
                         break;
                     case 3:
-                        System.out.println("Cuál es la fecha y hora de la cita?");String fecha= sc.next();
-                        System.out.println("Cuál es la razón de la cita?");String razon= sc.next();
-                        System.out.println("Que doctor antenderá?");String doc= sc.next();
-                        System.out.println("Que paciente atenderá?");String pac= sc.next();
-                        if (Verificar(doc, pac))crearCita(fecha,razon,doc,pac);
-                        else{
+                        System.out.println("Cuál es la fecha y hora de la cita?");
+                        String fecha = sc.next();
+                        System.out.println("Cuál es la razón de la cita?");
+                        String razon = sc.next();
+                        System.out.println("Que doctor antenderá?");
+                        String doc = sc.next();
+                        System.out.println("Que paciente atenderá?");
+                        String pac = sc.next();
+                        if (Verificar(doc, pac)) crearCita(fecha, razon, doc, pac);
+                        else {
                             System.out.println("No se encuentran el doctor o el paciente en la base de datos");
                         }
                         break;
                     case 0:
-                        //Save();
-                        cont="n";
+                        //Save("citas");
+                        cont = "n";
                         break;
                     default:
                         System.out.println("Opción Invalida, vuelva a escoger");
                         break;
-                }}catch(NumberFormatException | JsonProcessingException exception){
-                System.out.println("----No escribiste un numero intenta de nuevo---");} catch (IOException e) {
+                }
+            }
+        catch(NumberFormatException ete){
+                System.out.println("----No escribiste un numero intenta de nuevo---");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        }while(cont.equals("o"));
+        }while(cont.equals("o"));}
+        else{System.out.println("No esta el usuario o la contraseña");}
     }
         public static void crearDoc(String nombre, String especialidad) throws IOException {
         total.clear();load("doctores");
@@ -93,20 +101,21 @@ public class Main {
         total.clear();load("citas");
         Cita cit= new Cita(fecha,razon,Doc,pac);
         String cita= mapper.writeValueAsString(cit);total.add(cita);
-        Save("citas");
+        //Save();
     }
-        public static void cargarUsu(){
-            if (Usuarios==null){
-                Usuarios= new ArrayList<>();
-            }
+    public static void cargarUsu(){
+        if (Usuarios==null){
+            Usuarios= new ArrayList<>();
+        }
 
-            Usuarios.add(new Usuario("Admin","123"));
-            Usuarios.add(new Usuario("Leonardz","Comida"));
-            System.out.println("Exito");
-        }
-        public static boolean validarUsuarios(String Usr, String Pass){
-            return Usuarios.stream().anyMatch(s -> s.getPassword().equals(Pass) && s.getUsername().equals(Usr));
-        }
+        Usuarios.add(new Usuario("Admin","123"));
+        Usuarios.add(new Usuario("Leonardz","Comida"));
+        System.out.println("Exito");
+    }
+    public static boolean validarUsuarios(String Usr, String Pass){
+           return Usuarios.stream().anyMatch(s -> s.getPassword().equals(Pass) && s.getUsername().equals(Usr));
+    }
+
     public static boolean Verificar(String doc, String paciente){
         boolean aux= false;
         boolean aux2=false;
@@ -115,6 +124,7 @@ public class Main {
             //mapper.reader();
 
             Gson gson = new Gson();
+
                 String line=null;
                 while ((line = reader.readLine()) != null){
                         if(line.contains(paciente))aux2=true;
