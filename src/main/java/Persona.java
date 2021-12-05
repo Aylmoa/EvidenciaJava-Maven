@@ -3,8 +3,7 @@ public class Persona {
     private String Nombre;
 
     Persona(){}
-    Persona(int id, String nom){
-        this.setId(id);
+    Persona( String nom){
         setNombre(nom);
     }
 

@@ -1,17 +1,19 @@
 
 import java.time.*;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cita {
     int idCita;
-    Date fecha;
+    String fecha;
     String motivo;
-    Doctor doctor;
-    Paciente paciente;
+    String doctor;
+    String paciente;
+    private static final AtomicInteger count = new AtomicInteger(0);
     Cita(){
     }
-    Cita(int id, Date fecha, String motivo, Doctor doc, Paciente paciente){
-        idCita=id;
+    Cita( String fecha, String motivo, String doc, String paciente){
+        idCita=count.incrementAndGet();
         this.fecha=fecha;
         this.motivo=motivo;
         doctor=doc;
