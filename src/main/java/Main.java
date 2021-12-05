@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<Object>total= new ArrayList<Object>();
+    static ArrayList<Usuario>Usuarios= new ArrayList();
     static Path origi=null;
     static ObjectMapper mapper= new ObjectMapper();
 
@@ -29,7 +30,12 @@ public class Main {
         Scanner sc= new Scanner(System.in);
         String cont="o";String nombre;
         //load();
-
+        cargarUsu();
+        System.out.println("Username:");String usr= sc.nextLine();
+        System.out.println("Password:");String pass= sc.nextLine();
+        Boolean existe; existe=validarUsuarios(usr,pass);
+        if(existe) {
+            System.out.println("Bienvenido");
         do{
             System.out.println("Porfavor escoga que es lo que va a querer hacer\n1= Registrar Doctor 2= Registrar Paciente" +
                     "3= Registrar nueva cita 0= Salir");
@@ -40,6 +46,9 @@ public class Main {
                         System.out.println("Cual es el nombre del Doctor?"); nombre= sc.next();
                         System.out.println("Cual es la especialidad del Doctor?");String espe= sc.next();
                         crearDoc(nombre,espe);
+                        //Doctor doc= new Doctor(nombre,espe);
+                        //String doce=mapper.writeValueAsString(doc);
+                        //System.out.println(doce);
                         break;
                     case 2:
                         System.out.println("Cual es el nombre del paciente nuevo(a)?");nombre= sc.next();
@@ -56,15 +65,14 @@ public class Main {
                         }
                         break;
                     case 0:
-                        //Save("citas");
+                        //Save();
                         cont="n";
                         break;
                     default:
                         System.out.println("Opción Invalida, vuelva a escoger");
                         break;
-                }}catch(NumberFormatException ete){
-                System.out.println("----No escribiste un numero intenta de nuevo---");
-            } catch (IOException e) {
+                }}catch(NumberFormatException | JsonProcessingException exception){
+                System.out.println("----No escribiste un numero intenta de nuevo---");} catch (IOException e) {
                 e.printStackTrace();
             }
         }while(cont.equals("o"));
@@ -87,7 +95,18 @@ public class Main {
         String cita= mapper.writeValueAsString(cit);total.add(cita);
         Save("citas");
     }
+        public static void cargarUsu(){
+            if (Usuarios==null){
+                Usuarios= new ArrayList<>();
+            }
 
+            Usuarios.add(new Usuario("Admin","123"));
+            Usuarios.add(new Usuario("Leonardz","Comida"));
+            System.out.println("Exito");
+        }
+        public static boolean validarUsuarios(String Usr, String Pass){
+            return Usuarios.stream().anyMatch(s -> s.getPassword().equals(Pass) && s.getUsername().equals(Usr));
+        }
     public static boolean Verificar(String doc, String paciente){
         boolean aux= false;
         boolean aux2=false;
@@ -96,7 +115,6 @@ public class Main {
             //mapper.reader();
 
             Gson gson = new Gson();
-
                 String line=null;
                 while ((line = reader.readLine()) != null){
                         if(line.contains(paciente))aux2=true;
